@@ -1,4 +1,4 @@
 /.DS_Store
-__pycache__/
+/workspace/__pycache__/
 
-/tests/__pycache__/
+/workspace//tests/__pycache__/

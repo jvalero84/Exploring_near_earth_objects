@@ -51,9 +51,9 @@ class NearEarthObject:
         self.name = None if name == 'None' else name
         try:
             self.diameter = float(diameter)
-            self.hazardous = bool(hazardous)
-        except ValueError:
-            print("Bad arguments provided for constructor of NearEarthObject")
+            self.hazardous = True if hazardous == 'Y' else False
+        except ValueError as ex:
+            print(ex)
         # Create an empty initial collection of linked approaches.
         self.approaches = []
 

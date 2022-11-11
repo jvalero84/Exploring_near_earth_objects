@@ -24,8 +24,26 @@ def load_neos(neo_csv_path):
     :param neo_csv_path: A path to a CSV file containing data about near-Earth objects.
     :return: A collection of `NearEarthObject`s.
     """
-    # TODO: Load NEO data from the given CSV file.
-    return ()
+    # DONE: Load NEO data from the given CSV file.
+
+    neos = []
+
+    try:
+        with open(neo_csv_path, 'r') as infile:
+            reader = csv.DictReader(infile)
+            for entry in reader:
+                print(entry)
+                if entry['diameter'] != '':
+                    neo = NearEarthObject(entry['pdes'], bool(entry['pha']),entry['name'],entry['diameter'])
+                else:
+                    neo = NearEarthObject(entry['pdes'], bool(entry['pha']),entry['name'])
+                neos.append(neo)
+    except Exception as ex:
+        print(ex)
+    finally:
+        infile.close
+
+    return neos
 
 
 def load_approaches(cad_json_path):
@@ -34,5 +52,19 @@ def load_approaches(cad_json_path):
     :param neo_csv_path: A path to a JSON file containing data about close approaches.
     :return: A collection of `CloseApproach`es.
     """
-    # TODO: Load close approach data from the given JSON file.
-    return ()
+    # DONE: Load close approach data from the given JSON file.
+
+    cas = []
+
+    with open(cad_json_path, 'r') as infile:
+        reader = json.load(infile)
+        fields = reader['fields']
+        positions = [(fields.index(item),item) for item in ['des','cd','dist','v_rel']]
+        for entry in reader['data']:
+            data = {}
+            for pos, val in positions:
+                data[val] = entry[pos]
+            ca = CloseApproach(data['des'],data['cd'],data['dist'],data['v_rel'])
+            cas.append(ca)
+        print(f"Returning a collection of Close Approach objects with {len(cas)} items")
+    return cas

@@ -41,24 +41,28 @@ class NEODatabase:
         self._neos = neos
         self._approaches = approaches
 
-        # TODO: What additional auxiliary data structures will be useful?
+        # DONE: What additional auxiliary data structures will be useful?
         self._neo_by_name = {}
         self._neo_by_designation = {}
 
         for neo in neos:
             self._neo_by_designation[neo.designation] = neo
+            if neo.name is not None:
+                self._neo_by_name[neo.name] = neo
 
-        # TODO: Link together the NEOs and their close approaches.
+        # DONE: Link together the NEOs and their close approaches.
         neo_to_cas = {}
         for ca in self._approaches:
-            if ca.designation in neo_to_cas:
-                neo_to_cas[ca.designation].append(ca)
+            if ca._designation in neo_to_cas:
+                neo_to_cas[ca._designation].append(ca)
             else:
-                neo_to_cas[ca.designation] = [ca]
-            ca.neo = self._neo_by_designation[ca.designation]
+                neo_to_cas[ca._designation] = [ca]
+            ca.neo = self._neo_by_designation[ca._designation]
 
-
-
+        for neo in neos:
+            if neo.designation in neo_to_cas:
+                neo.approaches = neo_to_cas[neo.designation]
+        
         
 
 
@@ -75,8 +79,8 @@ class NEODatabase:
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
-        # TODO: Fetch an NEO by its primary designation.
-        return None
+        # DONE: Fetch an NEO by its primary designation.
+        return self._neo_by_designation.get(designation, None)
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -92,8 +96,8 @@ class NEODatabase:
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
-        # TODO: Fetch an NEO by its name.
-        return None
+        # DONE: Fetch an NEO by its name.
+        return self._neo_by_name.get(name, None)
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.

@@ -33,10 +33,14 @@ def load_neos(neo_csv_path):
             reader = csv.DictReader(infile)
             for entry in reader:
                 print(entry)
-                if entry['diameter'] != '':
-                    neo = NearEarthObject(entry['pdes'], bool(entry['pha']),entry['name'],entry['diameter'])
+                if entry['diameter'] != '' and entry['name'] != '':
+                    neo = NearEarthObject(entry['pdes'], entry['pha'],entry['name'],entry['diameter'])
+                elif entry['name'] != '' and entry['diameter'] == '':
+                    neo = NearEarthObject(entry['pdes'], entry['pha'], name = entry['name'])
+                elif entry['name'] == '' and entry['diameter'] != '':
+                    neo = NearEarthObject(entry['pdes'], entry['pha'], diameter = entry['diameter'])
                 else:
-                    neo = NearEarthObject(entry['pdes'], bool(entry['pha']),entry['name'])
+                    neo = NearEarthObject(entry['pdes'], entry['pha'])
                 neos.append(neo)
     except Exception as ex:
         print(ex)

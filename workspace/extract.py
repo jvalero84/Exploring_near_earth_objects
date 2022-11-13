@@ -32,7 +32,6 @@ def load_neos(neo_csv_path):
         with open(neo_csv_path, 'r') as infile:
             reader = csv.DictReader(infile)
             for entry in reader:
-                print(entry)
                 if entry['diameter'] != '' and entry['name'] != '':
                     neo = NearEarthObject(entry['pdes'], entry['pha'],entry['name'],entry['diameter'])
                 elif entry['name'] != '' and entry['diameter'] == '':
@@ -70,5 +69,4 @@ def load_approaches(cad_json_path):
                 data[val] = entry[pos]
             ca = CloseApproach(data['des'],data['cd'],data['dist'],data['v_rel'])
             cas.append(ca)
-        print(f"Returning a collection of Close Approach objects with {len(cas)} items")
     return cas

@@ -32,6 +32,7 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     # DONE: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, designation, hazardous, name='None', diameter=float('nan')):
@@ -77,6 +78,7 @@ class NearEarthObject:
                 f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})")
     
     def serialize(self):
+        """Return a prepresentation of the current object ready to use for CSV or JSON serialization."""
         return {
             "designation": self.designation,
             "name": self.name if self.name is not None else '',
@@ -98,6 +100,7 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     # DONE: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, designation, time, distance, velocity):
@@ -154,6 +157,7 @@ class CloseApproach:
                 f"velocity={self.velocity:.2f}, neo={self.neo!r})")
     
     def serialize(self):
+        """Return a prepresentation of the current object ready to use for CSV or JSON serialization."""
         return {
             "datetime_utc": self.time_str,
             "distance_au": self.distance, 

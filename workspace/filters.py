@@ -38,6 +38,7 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary predicate and a reference value.
 
@@ -69,36 +70,82 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 class DistanceFilter(AttributeFilter):
+    """A concrete class extending AttributeFilter for filters on comparable attributes around min and max distance.
 
+    It overrides the get classmethod to return the specific attribute containing distance information.
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Get distance attribute from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of the attribute distance, comparable to `self.value` via `self.op`.
+        """
         return approach.distance
 
 class DateFilter(AttributeFilter):
+    """A concrete class extending AttributeFilter for filters on comparable attributes around a concrete date and a min and max dates.
+
+    It overrides the get classmethod to return the specific attribute containing Approach's date/time information.
+    """
 
     @classmethod
     def get(cls, approach):
+        """Get time attribute from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of the attribute time, comparable to `self.value` via `self.op` in a date format.
+        """
         return approach.time.date()
 
 class VelocityFilter(AttributeFilter):
+    """A concrete class extending AttributeFilter for filters on comparable attributes around a min and max velocity.
+
+    It overrides the get classmethod to return the specific attribute containing Approach's velocity information.
+    """
 
     @classmethod
     def get(cls, approach):
+        """Get velocity attribute from a close approach.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of the attribute velocity, comparable to `self.value` via `self.op`.
+        """
         return approach.velocity
 
 class DiameterFilter(AttributeFilter):
+    """A concrete class extending AttributeFilter for filters on comparable attributes around a min and max diameter of the related NEO.
+
+    It overrides the get classmethod to return the specific attribute containing diameter information of the NEO to which this approach refers.
+    """
 
     @classmethod
     def get(cls, approach):
+        """Get diameter attribute from the NEO to which this approach refers.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of the attribute diameter of the related NEO, comparable to `self.value` via `self.op`.
+        """        
         return approach.neo.diameter
 
 class HazardousFilter(AttributeFilter):
+    """A concrete class extending AttributeFilter for filters on comparable attribute hazardous of the related NEO.
 
+    It overrides the get classmethod to return the specific attribute of the NEO to which this approach refers regarding whether it is or not hazardous.
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Get hazardous attribute from the NEO to which this approach refers.
+
+        :param approach: A `CloseApproach` on which to evaluate this filter.
+        :return: The value of the attribute hazardous of the related NEO, comparable to `self.value` via `self.op`.
+        """ 
         return approach.neo.hazardous
 
 def create_filters(date=None, start_date=None, end_date=None,
